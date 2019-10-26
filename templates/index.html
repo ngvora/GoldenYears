@@ -1,0 +1,73 @@
+<html>
+  <head>
+     <title>Golden Years</title>
+     <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <link rel= "stylesheet" type= "text/css" href= "/../static/styles/style2.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <style>
+      body {background-image:url(/static/gold.png);}
+      </style>
+  </head>
+  <body>
+    <div class="container"><br>
+      <center>
+        <p>
+          <img src="/static/GoldenYearsLogo.png" alt="Golden Years">
+        </p>
+        <h2>Lets get started!</h2>
+      </center>
+    </div>
+
+    <div class=container"><br>
+    <div class="row align-items-center justify-content-center">
+    <div class="col-md-4">
+      <form  action="" method="post" role="form">
+        {{ form.csrf }}
+        <div class="form-group">
+          <label for="cage">Current Age:</label>
+          <input type="number" step="1" class="form-control" id="cage" name="cage" placeholder="Current Age">
+          <br>
+	        <label for="desired_rage">Planned Retirement Age:</label>
+	        <input type="number" step="1" class="form-control" id="desired_rage" name="desired_rage" placeholder="Desired Retirement Age">
+          <br>
+          <label for="salary">Average Salary Till Retirement:</label>
+	        <input type="number" step="0.01" class="form-control" id="salary" name="salary" placeholder="Salary">
+          <br>
+          <label for="retirepercent">Total Employer and Employee % Salary Contribution to Retirement:</label>
+	        <input type="number" step="0.01" class="form-control" id="retirepercent" name="retirepercent" placeholder="Total % contribution to a Retirement plan i.e 401k">
+          <br>
+          <label for="currentsavings">Current Total Savings:</label>
+	        <input type="number" step="0.01" class="form-control" id="currentsavings" name="currentsavings" placeholder="Current Savings in $">
+          <br>
+          <label for="yearlysavings">Yearly Average Savings:</label>
+	        <input type="number" step="0.01" class="form-control" id="yearlysavings" name="yearlysavings" placeholder="Yearly Savings in $">
+          <br>
+        	</div>													   
+        <center>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </center>
+      </form>
+      <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+        {% for message in messages %}
+            {% if "Error" not in message[1]: %}
+                <div class="alert alert-info">
+                <strong>Success! </strong> {{ message[1] }}
+                </div>
+            {% endif %}
+            {% if "Error" in message[1]: %}
+                <div class="alert alert-danger">
+                <strong>Error: </strong> {{ message[1] }}
+                </div>
+            {% endif %}
+        {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <br>
+    </div>
+    </div>
+  </body>
+</html>
