@@ -1,8 +1,9 @@
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US')
 from random import randint 
 import pandas as pd
 from time import strftime
-import money
-from flask import Flask, render_template, flash, request
+from flask import Flask, render_template, flash, request, session
 from wtforms import Form, TextField,DecimalField, TextAreaField, IntegerField, validators, StringField, SubmitField
 
 DEBUG = True
@@ -36,28 +37,23 @@ def results():
             user_results(gender, cage, desired_rage, salary,retirepercent,currentsavings,yearlysavings)
         else:
             flash('Error: All Fields are Required')
-
     return render_template('index.html', form=form)
 
 def user_results(gender, cage, desired_rage, salary,retirepercent,currentsavings,yearlysavings):
     form = ReusableForm(request.form)
     if request.method == 'POST':
-        print(gender)
-        gender=int(request.form.get('gender'))
+        gender=str(request.form.get('gender'))
         cage=int(request.form.get('cage'))
         desired_rage=int(request.form.get('desired_rage'))
         salary=float(request.form.get('salary'))
         retirepercent=float(request.form.get('retirepercent'))
         currentsavings=float(request.form.get('currentsavings'))
         yearlysavings=float(request.form.get('yearlysavings'))
-   # if gender == 'F':
-    #    gender = 0
-    #else:
-     #   gender = 1
+  
     df_male = pd.read_excel(r'life_expectancy_male.xlsx')
     df_female = pd.read_excel(r'life_expectancy_female.xlsx')
     df = 0
-    if gender == 1:
+    if gender == 'M':
         df = df_male
     else:
         df = df_female
@@ -68,16 +64,21 @@ def user_results(gender, cage, desired_rage, salary,retirepercent,currentsavings
 
     ytr = desired_rage - cage
     gy = le - desired_rage + cage
-    net_savings = retirepercent*salary*ytr + currentsavings + yearlysavings*ytr
-    retirement_income = net_savings/gy
-    if net_savings >= 10*salary:
-        flash('Income Sufficient. Savings = ' + str(round(net_savings, 2)) + ' and retirement income = ' + str(round(retirement_income, 2)))
+    net_savings = (retirepercent/100)*salary*ytr + currentsavings + yearlysavings*ytr
+    retirement_income = '{:20,.0f}'.format(net_savings/gy) 
+    if gy < 0:
+        flash('Your retirement age of ' + str(desired_rage) + ' is greater than your total life expectancy of ' + str(le+cage) + '. Please select a retirement age lower than ' + str(le+cage))
+    elif net_savings >= 8*salary:
+        net_savings= '{:20,.0f}'.format(net_savings)
+        flash('Congratulations! You are on track to retire on time with adequate savings. Your savings at retirement should roughly be $' + str(net_savings) + '. You could spend $' + str(retirement_income) + ' yearly for ' + str(round(gy,1)) + ' years')
     else:
-        ideal_ytr = (10*salary - currentsavings)/(retirepercent*salary + yearlysavings)
+        net_savings = '{:20,.0f}'.format(net_savings)
+        ideal_ytr = (8*salary - currentsavings)/((retirepercent/100)*salary + yearlysavings)
         ideal_retirement_age = ideal_ytr + cage
-        ideal_percent_retire = (10 * salary - currentsavings - yearlysavings*ytr) / (ytr * salary)
-        flash('Income Insufficient. Increase percent savings to ' + str(round(ideal_percent_retire, 4)) + ' or choose to retire at' + str(round(ideal_retirement_age)))
-    
+        ideal_percent_retire = (8 * salary - currentsavings - yearlysavings*ytr) / (ytr * salary)
+        savingstotal = '{:20,.0f}'.format(salary*ideal_percent_retire)
+        flash('You should consider saving more for a more comfortable retirement. Your retirement savings would be $' + str(net_savings) + ' and you should roughly aim for $' + str(round(8*salary)) + '. To correct this, you should retire later at ' + str(int(ideal_retirement_age)) + ' or adjust the percentage of your salary invested in retirement to ' + str(round(100*ideal_percent_retire,2)) + '%, which is $' + str(savingstotal) + ' yearly')
+
 
 if __name__ == "__main__":
     app.run()
