@@ -1,9 +1,9 @@
 import pandas as pd
 def user_results(gender, cage, desired_rage, salary,retirepercent,currentsavings,yearlysavings):
-    if gender == 'F':
-        gender = 0
-    else:
-        gender = 1
+   # if gender == 'F':
+    #    gender = 0
+    #else:
+     #   gender = 1
     df_male = pd.read_excel(r'life_expectancy_male.xlsx')
     df_female = pd.read_excel(r'life_expectancy_female.xlsx')
     df = 0
