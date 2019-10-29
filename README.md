@@ -7,5 +7,6 @@ Once you have that, input ` python app.py ` on your terminal, open the link http
 
 # How to use
 Select Fill Form and then input the data.
+![Form](https://github.com/ngvora/GoldenYears/blob/master/results.png)
 Select submit and your results will be generated! The results will either suggest that you retire later or tell you how much more you need to start saving to comfortably retire when you want to.
 
