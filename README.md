@@ -1,5 +1,5 @@
 # GoldenYears
-A retirement financial planner web interface. Built at HackGT. Learn more at devpost.com/software/goldenyears
+A retirement financial planner web interface. Built at HackGT. Learn more at [Devpost](https://devpost.com/software/goldenyears)
 
 # Installation Guide
 Ensure that you have Flask, Python and Pandas installed on your computer.
