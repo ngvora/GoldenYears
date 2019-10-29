@@ -3,7 +3,7 @@ A retirement financial planner web interface. Built at HackGT. Learn more at dev
 
 # Installation Guide
 Ensure that you have Flask, Python and Pandas installed on your computer.
-Once you have that, input ' python app.py ' on your terminal, open the link http://127.0.0.1:5000/ and enjoy! 
+Once you have that, input ` python app.py ` on your terminal, open the link http://127.0.0.1:5000/ and enjoy! 
 
 # How to use
 Select Fill Form and then input the data.
